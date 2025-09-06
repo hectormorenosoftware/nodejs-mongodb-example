@@ -2,7 +2,7 @@ const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 
 const url =
-  "mongodb+srv://test:test@cluster0.m33n255l.mongodb.net/products-potato?retryWrites=true&w=majority";
+  "mongodb+srv://hgomezadmin:password1@@products.iobyboq.mongodb.net/?retryWrites=true&w=majority&appName=products";
 
 const createProduct = async (req, res, next) => {
   const newProduct = {
@@ -13,7 +13,7 @@ const createProduct = async (req, res, next) => {
 
   try {
     await client.connect();
-    const db = client.db();
+    const db = client.db("company");
     await db.collection("products").insertOne(newProduct);
   } catch (error) {
     return res.json({ message: "Could not store data." });
@@ -30,7 +30,7 @@ const getProducts = async (req, res, next) => {
 
   try {
     await client.connect();
-    const db = client.db();
+    const db = client.db("company");
     products = await db.collection("products").find().toArray();
   } catch (error) {
     return res.json({ message: "Could not retrieve products." });
@@ -46,7 +46,7 @@ const getProduct = async (req, res, next) => {
   let product;
   try {
     await client.connect();
-    const db = client.db();
+    const db = client.db("company");
     product = await db.collection("products").findOne({
       $or: [{ _id: id }],
     });
@@ -65,7 +65,7 @@ const deleteProduct = async (req, res, next) => {
 
   try {
     await client.connect();
-    const db = client.db();
+    const db = client.db("company");
     await db.collection("products").deleteOne({ _id: id });
   } catch (error) {
     return res.json({ message: "Could not delete product." });
@@ -86,7 +86,7 @@ const updateProduct = async (req, res, next) => {
 
   try {
     await client.connect();
-    const db = client.db();
+    const db = client.db("company");
     await db.collection("products").replaceOne({ _id: id }, newProduct);
   } catch (error) {
     return res.json({ message: "Could not update data." });
